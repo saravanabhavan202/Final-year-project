@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+    <style>
+        .container { max-width: 1200px; margin: 20px auto; }
+        .main-image { width: 100%; border: 1px solid #ddd; }
+        .results-section { margin: 30px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; }
+        .roi-results { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analysis Results</h1>
+
+        <h2>SPM Feature Maps</h2>
+        <img src="{{ url_for('static', filename='tmp/' + plot_filename) }}" class="main-image">
+
+        <div class="results-section">
+            <h2>Diagnosis: {{ predicted_class }}</h2>
+
+            <h3>Confidence Scores</h3>
+            <table>
+                <tr><th>Class</th><th>Confidence</th></tr>
+                {% for name, score in confidence_scores %}
+                <tr><td>{{ name }}</td><td>{{ "%.1f"|format(score) }}%</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="results-section">
+            <h3>Region Analysis</h3>
+            <div class="roi-results">
+                {% for t in thresholds %}
+                <div>
+                    <h4>Threshold: {{ t }}</h4>
+                    <p>Selected Voxels: {{ "%.2f"|format(roi_results[t].selection_rate * 100) }}%</p>
+                    <table>
+                        <tr><th>Region</th><th>Activation</th></tr>
+                        {% for roi, val in roi_results[t].roi_significance.items() %}
+                        <tr><td>{{ roi }}</td><td>{{ "%.1f"|format(val * 100) }}%</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

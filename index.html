@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alzheimer's MRI Analysis</title>
+    <style>
+        body { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .upload-box { border: 2px dashed #ccc; padding: 30px; text-align: center; }
+        input[type="submit"] { margin-top: 15px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>Alzheimer's Stage Classification</h1>
+    <div class="upload-box">
+        <form method="post" enctype="multipart/form-data" action="/predict">
+            <input type="file" name="file" accept="image/*" required>
+            <br>
+            <input type="submit" value="Analyze MRI">
+        </form>
+    </div>
+</body>
+</html>
